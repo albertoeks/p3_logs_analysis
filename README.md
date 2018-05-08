@@ -10,7 +10,7 @@ Create a reporting tool that prints out reports (in plain text) based on the dat
 
 *To start on this project, you'll need database software (provided by a Linux virtual machine) and the data to analyze.
 
-Step 1: move to vagrant directory
-Step 2: use command `vagrant up` to bring the virtual machine back online
-Step 3: log into it with command `vagrant ssh`
-Step 4: use command `python reports.py`
+Step 1: move to vagrant directory  
+Step 2: use command `vagrant up` to bring the virtual machine back online  
+Step 3: log into it with command `vagrant ssh`  
+Step 4: use command `python reports.py`  

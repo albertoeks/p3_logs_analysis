@@ -9,7 +9,7 @@ Create a reporting tool that prints out reports (in plain text) based on the dat
 #### Prerequisites
 Make sure you have installed all of the following prerequisites:
 
-VirtualBox - <https://www.virtualbox.org/wiki/Downloads>
+VirtualBox - <https://www.virtualbox.org/wiki/Downloads>  
 Vagrant - <https://www.vagrantup.com/downloads.html>
 
 #### How to run

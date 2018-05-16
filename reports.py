@@ -6,14 +6,27 @@ import psycopg2
 DB_NAME = "news"  # database name
 
 
+def connect(database_name):
+    """Connect to the database.  Returns a database connection."""
+    try:
+        db = psycopg2.connect(dbname=database_name)
+        return db
+
+    except psycopg2.Error as e:
+        # THEN you could print an error
+        # and perhaps exit the program
+        print(\"Unable to connect to database\")
+        sys.exit(1)
+
+
 def query1():
     """Fetch the most popular three articles of all time"""
 
-    db = psycopg2.connect(dbname=DB_NAME)
+    db = connect(DB_NAME)
     c = db.cursor()
     c.execute(
         """select title, count(*) as views from articles a, log l
-        where l.status='200 OK' and l.path like concat('%',a.slug)
+        where l.status='200 OK' and l.path = concat('%',a.slug)
         group by a.title order by views desc limit 3
         """)
     results = c.fetchall()
@@ -32,12 +45,12 @@ def print_result_query1():
 def query2():
     """Fetch the most popular article authors of all time"""
 
-    db = psycopg2.connect(dbname=DB_NAME)
+    db = connect(DB_NAME)
     c = db.cursor()
     c.execute(
         """select au.name, count(*)
         as views from articles ar, authors au, log l
-        where l.status='200 OK' and l.path like concat('%',ar.slug)
+        where l.status='200 OK' and l.path = concat('%',ar.slug)
         and au.id = ar.author group by au.name order by views desc
         """)
     results = c.fetchall()
@@ -56,7 +69,7 @@ def print_result_query2():
 def query3():
     """Fetch the days on which more than 1% of the requests lead to errors"""
 
-    db = psycopg2.connect(dbname=DB_NAME)
+    db = connect(DB_NAME)
     c = db.cursor()
     c.execute(
         """
@@ -67,7 +80,7 @@ def query3():
             from
                 (select substring(cast(time as text),0,11) as day,
                  cast(count(l.status) as decimal) as total_errors
-                    from log l where l.status like '%404%' group by day)
+                    from log l where l.status = '%404%' group by day)
                     as errors, -- subquery total errors
                 (select substring(cast(time as text),0,11) as day,
                  cast(count(l.status) as decimal) as total_requests
